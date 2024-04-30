@@ -33,7 +33,7 @@ git clone "https://github.com/LuLuji04/PL23_24.git"
 #### 5. Install requirements
 ```bash
 cd PL23_24/
-pip install -r requirements.txt
+pip install -r requirements.txt --no-cache-dir
 ```
 
 #### 6. Load sample data into MySQL

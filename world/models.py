@@ -1,11 +1,3 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
-
 from __future__ import unicode_literals
 
 from django.db import models
@@ -13,54 +5,109 @@ from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserM
 
 from phonenumber_field.modelfields import PhoneNumberField
 
+# Create your models here.
+# 在MySQL中创建对应的一个表
+class Team(models.Model):
+    '球队建表'
+    teamid = models.IntegerField(verbose_name="球队ID", primary_key=True)
+    name = models.CharField(verbose_name="球队英文名称", max_length=20, unique=True)
+    shortname = models.CharField(verbose_name="球队缩写", max_length=20)
+    chinaname = models.CharField(verbose_name="球队中文名称", max_length=20)
+    othername = models.CharField(verbose_name="球队中文别名", max_length=20)
+    foundtime = models.DateTimeField(verbose_name="成立时间", auto_now=True)
+    city = models.CharField(verbose_name="城市", max_length=20)
+    home = models.CharField(verbose_name="主场", max_length=20)
+    coach = models.CharField(verbose_name="教练", max_length=20)
 
-class City(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=35)  # Field name made lowercase.
-    countrycode = models.ForeignKey('Country', models.DO_NOTHING, db_column='CountryCode')  # Field name made lowercase.
-    district = models.CharField(db_column='District', max_length=20)  # Field name made lowercase.
-    population = models.IntegerField(db_column='Population')  # Field name made lowercase.
+class Player(models.Model):
+    '球员建表'
+    playerid = models.IntegerField(verbose_name="球员ID", primary_key=True)
+    name = models.CharField(verbose_name="球员名", max_length=20)
+    chinaname = models.CharField(verbose_name="球员中文名", max_length=20)
+    position = models.CharField(verbose_name="位置", max_length=20)
+    nation = models.CharField(verbose_name="国籍", max_length=20)
+    age = models.IntegerField(verbose_name="年龄")
+    prize = models.CharField(verbose_name="身价", max_length=20)
+    num = models.IntegerField(verbose_name="号码")
+    teamid = models.ForeignKey(
+        verbose_name="球队ID",
+        to="Team",
+        to_field="teamid",
+        db_column='teamid',
+        on_delete=models.CASCADE
+    )
 
-    class Meta:
-        managed = False
-        db_table = 'city'
+class Match(models.Model):
+    '赛程建表'
+    matchid = models.IntegerField(verbose_name="赛程ID", primary_key=True)
+    hostteamid = models.ForeignKey(
+        verbose_name="主队ID",
+        to="Team",
+        to_field="teamid",
+        db_column='hostteamid',
+        related_name="host_match",
+        on_delete=models.CASCADE
+    )
+    guestteamid = models.ForeignKey(
+        verbose_name="客队ID",
+        to="Team",
+        to_field="teamid",
+        db_column='guestteamid',
+        related_name="guest_match",
+        on_delete=models.CASCADE
+    )
+    hostgoal = models.IntegerField(verbose_name="主队分数")
+    guestgoal = models.IntegerField(verbose_name="客队分数")
+    date = models.DateTimeField(verbose_name="比赛日期", auto_now=True)
+    status_choices = (
+        (1, "已结束"),
+        (2, "进行中"),
+        (3, "未比赛"),
+    )
+    status = models.SmallIntegerField(verbose_name="比赛状态", choices=status_choices)
 
+class Statistic(models.Model):
+    '比赛数据建表'
+    playerid = models.ForeignKey(
+        verbose_name="球员ID",
+        to="Player",
+        to_field="playerid",
+        db_column='playerid',
+        on_delete=models.CASCADE
+    )
+    behavior_choices = (
+        (1, "GOAL"),
+        (2, "PENALTY"),
+        (3, "ASSIST"),
+        (4, "CLEARANCE"),
+        (5, "TACKLE"),
+        (6, "REDCARD"),
+        (7, "YELLOWCARD"),
+        (8, "OFFSIDE"),
+    )
+    behavior = models.SmallIntegerField(verbose_name="球员行为", choices=behavior_choices)
+    behaviorcount = models.IntegerField(verbose_name="行为数量", default=0)
+    matchid = models.ForeignKey(
+        verbose_name="赛程ID",
+        to="Match",
+        to_field="matchid",
+        db_column='matchid',
+        on_delete=models.CASCADE
+    )
 
-class Country(models.Model):
-    code = models.CharField(db_column='Code', primary_key=True, max_length=3)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=52)  # Field name made lowercase.
-    continent = models.CharField(db_column='Continent', max_length=13)  # Field name made lowercase.
-    region = models.CharField(db_column='Region', max_length=26)  # Field name made lowercase.
-    surfacearea = models.FloatField(db_column='SurfaceArea')  # Field name made lowercase.
-    indepyear = models.SmallIntegerField(db_column='IndepYear', blank=True, null=True)  # Field name made lowercase.
-    population = models.IntegerField(db_column='Population')  # Field name made lowercase.
-    lifeexpectancy = models.FloatField(db_column='LifeExpectancy', blank=True, null=True)  # Field name made lowercase.
-    gnp = models.FloatField(db_column='GNP', blank=True, null=True)  # Field name made lowercase.
-    gnpold = models.FloatField(db_column='GNPOld', blank=True, null=True)  # Field name made lowercase.
-    localname = models.CharField(db_column='LocalName', max_length=45)  # Field name made lowercase.
-    governmentform = models.CharField(db_column='GovernmentForm', max_length=45)  # Field name made lowercase.
-    headofstate = models.CharField(db_column='HeadOfState', max_length=60, blank=True, null=True)  # Field name made lowercase.
-    capital = models.IntegerField(db_column='Capital', blank=True, null=True)  # Field name made lowercase.
-    code2 = models.CharField(db_column='Code2', max_length=2)  # Field name made lowercase.
+class Standing(models.Model):
+    '球队积分建表'
+    teamid = models.ForeignKey(
+        verbose_name="球队ID",
+        to="Team",
+        to_field="teamid",
+        db_column='teamid',
+        on_delete=models.CASCADE
+    )
+    goals = models.IntegerField(verbose_name="进球数", default=0)
+    winlose = models.CharField(verbose_name="胜/平/负", max_length=10)
+    points = models.IntegerField(verbose_name="积分", default=0)
 
-    class Meta:
-        managed = False
-        db_table = 'country'
-
-
-class Countrylanguage(models.Model):
-    countrycode = models.ForeignKey(Country, models.DO_NOTHING, db_column='CountryCode', primary_key=True)  # Field name made lowercase.
-    language = models.CharField(db_column='Language', max_length=30)  # Field name made lowercase.
-    isofficial = models.CharField(db_column='IsOfficial', max_length=1)  # Field name made lowercase.
-    percentage = models.FloatField(db_column='Percentage')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'countrylanguage'
-        unique_together = (('countrycode', 'language'),)
-
-    def __unicode__(self):
-	return ("country-code: %s language: %s") %(self.countrycode.name, self.language)
 
 class DjangoMigrations(models.Model):
     app = models.CharField(max_length=255)
@@ -109,4 +156,3 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name"]
-

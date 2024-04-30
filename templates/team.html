@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  font-size: 28px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+
+tr:hover {background-color:#f5f5f5;}
+
+.active {
+  background-color: #4CAF50;
+}
+</style>
+</head>
+<body>
+
+<div style="text-align:center">
+    <img src='sources/${Team.name}.png'>
+    <h1>{{Team.name}}</h1>
+</div>
+
+
+<ul>
+  <li><a class="active" href="#Team">简介</a></li>
+  <li><a href="#Match">赛程</a></li>
+  <li><a href="#Player">球员</a></li>
+</ul>
+
+<h2>球队简介</h2>
+<p>球队英文名：{{Team.name}}</p>
+<p>成立时间：{{Team.fondtime}}</p>
+<p>城市:{{Team.city}}</p>
+<p>主场：{{Team.home}}</p>
+<p>教练:{{Team.coach}}</p>
+
+<div id="Match">
+    <h2>赛程</h2>
+    <table>
+      <tr>
+        <th>日期</th>
+        <th>主队</th>
+        <th>主队得分</th>
+        <th>客队得分</th>
+        <th>客队</th>
+      </tr>
+    {% for Match in matches %}
+      <tr>
+        <td><a href="{% url 'match_detail' match.id %}">{{match.date}}</td>
+        <td>{{Match.host_team}}</td>
+        <td>{{Match.host_team_score}}</td>
+        <td>{{Match.away_team_score}}</td>
+        <td>{{Match.away_team}}</td>
+      </tr>
+    {% endfor %}
+    </table>
+</div>
+
+<div id="Player">
+    <h2>球员</h2>
+    <table>
+      <tr>
+        <th>号码</th>
+        <th>姓名</th>
+        <th>位置</th>
+        <th>国籍</th>
+        <th>年龄</th>
+      </tr>
+    {% for Player in players %}
+      <tr>
+        <td>{{Player.num}}</td>
+        <td>{{Player.name}}</td>
+        <td>{{Player.position}}</td>
+        <td>{{Player.nationa}}</td>
+        <td>{{Player.age}}</td>
+      </tr>
+    {% endfor %}
+    </table>
+</div>
+</body>
+</html>

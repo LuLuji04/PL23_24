@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import User, Country, City, Countrylanguage
+from .models import User, Team, Player, Match
 
 admin.site.register(User)
-admin.site.register(City)
-admin.site.register(Country)
-admin.site.register(Countrylanguage)
+admin.site.register(Team)
+admin.site.register(Player)
+admin.site.register(Match)

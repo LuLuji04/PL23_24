@@ -27,12 +27,12 @@ source envs/bin/activate
 
 #### 4. Clone git repository
 ```bash
-git clone "https://github.com/Manisha-Bayya/simple-django-project.git"
+git clone "https://github.com/LuLuji04/PL23_24.git"
 ```
 
 #### 5. Install requirements
 ```bash
-cd simple-django-project/
+cd PL23_24/
 pip install -r requirements.txt
 ```
 
@@ -84,7 +84,7 @@ python manage.py migrate
 python manage.py rebuild_index
 
 # Run the server
-python manage.py runserver 0:8001
+python manage.py runserver localhost:8001
 
 # your server is up on port 8001
 ```

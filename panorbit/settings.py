@@ -25,7 +25,8 @@ SECRET_KEY = '3xb%+*2uex+%1&$@=*+(@^atnm!#tz-n&i5qn$o46jnp&u*2l^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["c9ae666b.ngrok.io", "localhost"]
+# ALLOWED_HOSTS = ["c9ae666b.ngrok.io", "localhost"]
+ALLOWED_HOSTS = ['c9ae666b.ngrok.io', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -38,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'haystack',
-    'world',
+    'world',#新app
     'phonenumber_field',
 ]
 
@@ -88,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'world',
         'USER': 'root',
-        'PASSWORD': 'xxxx',
+        'PASSWORD': 'luluji',
         'HOST': 'localhost',
         'PORT': '3306',
     }   

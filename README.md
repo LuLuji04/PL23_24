@@ -20,6 +20,8 @@ mkdir envs
 
 # Create virtual environment
 virtualenv ./envs/
+#或者
+python3.7 -m venv /home/luluji/envs/
 
 # Activate virtual environment
 source envs/bin/activate
@@ -33,7 +35,7 @@ git clone "https://github.com/LuLuji04/PL23_24.git"
 #### 5. Install requirements
 ```bash
 cd PL23_24/
-pip install -r requirements.txt --no-cache-dir
+pip install -r requirements.txt
 ```
 
 #### 6. Load sample data into MySQL
